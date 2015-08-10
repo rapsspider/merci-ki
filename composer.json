@@ -1,0 +1,33 @@
+{
+    "name": "rapsspider/merci-ki",
+    "description": "A small Framework MVC",
+    "type": "library",
+    "keywords": ["framework", "merci","mvc"],
+    "require": {
+        "php": ">=5.4.16"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "jason BOURLARD",
+            "email": "jason.bourlard@gmail.com"
+        },
+        {
+            "name": "Quentin DOUZIECH",
+            "email": "quentin.douziech@gmail.com"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/rapsspider/merci-ki/issues",
+        "source": "https://github.com/rapsspider/merci-ki"
+    },
+    "autoload": {
+        "psr-4": {
+            "MerciKI\\": "src"
+        },
+        "files": [
+            "basic_functions.php"
+        ]
+    },
+    "minimum-stability": "dev"
+}
