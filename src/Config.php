@@ -26,7 +26,7 @@ class Config {
 	/**
 	 * Information de connexion à la base de données.
 	 */
-    public static $database = [];
+    public static $databases = [];
 
     /**
      * Encode type of the page.

@@ -18,6 +18,7 @@
 namespace MerciKI\Body;
 
 use \JsonSerializable;
+use MerciKI\Config;
 use MerciKI\Factory\PDOFactory;
 use MerciKI\Exception\MerciKIException;
 use MerciKI\Database\IDatabaseSerializable;
@@ -28,11 +29,11 @@ class ModelsManager {
 
 	public static function getModel($DAO, $model) {
 		if(!isset(self::$_instances[$model])) {
-			$class = "MerciKI\\Models\\DAO\\" . $model . "Table" . $DAO;
+			$class = Config::$app['namespace'] . 'Models\\DAO\\' . $model . 'Table' . $DAO;
 			if(class_exists($class)) {
 				self::$_instances[$model] = self::instanceModel($DAO, $class);
 			} else {
-				throw new MerciKIException('Table Model "' . $model . 'Table' . $DAO . '" inexistant !');
+				throw new MerciKIException('Table Model "' . $model . 'Table' . $DAO . '" (' . $class . ') inexistant !');
 			}
 		}
 

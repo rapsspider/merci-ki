@@ -9,7 +9,7 @@
  *
  *
  * @author      Jason BOURLARD<jason.bourlard@gmail.com>
- * @author      Jason BOURLARD<quentin.douziech@gmail.com>
+ * @author      Quentin DOUZIECH<quentin.douziech@gmail.com>
  *
  * @copyright   Copyright (c) 2015  Jason BOURLARD, Quentin DOUZIECH
  * @since       1.0.0
@@ -186,7 +186,7 @@ abstract class Controller {
         $file = str_replace('.', DS, $file);
         
         // Si ce n'est pas une redirection
-        if ($this->response->codeStatus() != 302) {
+        if ($this->response->statusCode() != 302) {
             // Récupération du content de la view
             $this->_view->file = 'Views' . DS . $file . '.php';
             
