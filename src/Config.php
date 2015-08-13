@@ -39,6 +39,14 @@ class Config {
     public static $arg_separateur = '=';
     
     /**
+     * Configuration of the Authentification.
+     */
+    public static $auth_model = [
+        //'model' => 'User',
+        //'DAO'   => 'PDO'
+    ];
+    
+    /**
      * Configuration of the application
      */
     public static $app = [

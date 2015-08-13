@@ -23,38 +23,38 @@ use MerciKI\Network\Response;
 use MerciKI\Exception\ActionNotExist;
 
 /**
- * Classe représentant un controller
+ * This class represent a controller.
  */
 abstract class Controller {
+    
+    /**
+     * Class manager of the connection
+     */
+    protected $auth = null;
 
 	/**
-	 * Contient la request HTTP
+	 * The HTTP request
 	 * @var Request
 	 */
 	protected $request = null;
 
 	/**
-	 * Contient la response HTTP
+	 * The HTTP response
 	 * @var Response
 	 */
 	protected $response = null;
 
 	/**
-	 * Contient l'action a executer
+	 * The action to execute
 	 * @var String
 	 */
     protected $action = null;
 
 	/**
-	 * Layout par défaut à utiliser
+	 * The layout to use.
 	 * @var String
 	 */
 	public $layout = "default";
-
-	/**
-	 * @var file de view
-	 */
-    public $view = 'index';
 
     /**
      * @var View
@@ -62,15 +62,15 @@ abstract class Controller {
     public $_view;
 
 	/**
-	 * Tableau de modèles à utiliser.
+	 * Table of models to use.
 	 * @var Array
 	 */
 	public $models = [];
 
     /**
-     * Constructeur par défaut.
-	 * @param Request request Request de l'utilisateur
-	 * @param Reposne response Response à envoyer à l'utilisateur.
+     * Default Constructor.
+	 * @param Request  request  HTTP Request.
+	 * @param Response response HTTP Response.
      */
     public function __construct(Request &$request, Response &$response) {
     	$this->request = &$request;
@@ -84,6 +84,18 @@ abstract class Controller {
     public function initialize() {
     	$this->_view = new View();
 
+        if(isset(Config::$auth_model['DAO']) and isset(Config::$auth_model['model'])) {
+        	$class = ModelsManager::getModel(
+                Config::$auth_model['DAO'], 
+                Config::$auth_model['model']
+            );
+    	    $this->auth = new Authentification($class);
+
+    	    if($this->auth->isConnected()) {
+                $this->addVar('user', $this->auth->getUtilisateur());
+    	    }
+        }
+        
         $this->_instanceModels();
     }
 
@@ -108,11 +120,10 @@ abstract class Controller {
 	}
 
     /**
-     * Execute le controller.
+     * Execute the controller.
      * @param @action a executer
      */
     public function execute($action, $args = []) {
-        session_start();
         $this->action = $action;
 
         // On récupère le nom de la classe 
@@ -147,7 +158,7 @@ abstract class Controller {
     }
 
 	/**
-	 * Méthode à appeler avant d'executer l'action
+	 * Method to call before executing the action.
 	 * @return void
 	 */
 	public function beforeAction() {
@@ -155,9 +166,9 @@ abstract class Controller {
 	}
 
 	/**
-	 * Méthode permettant d'ajouter une var à la view.
-	 * @param String var Nom de la var à ajouter.
-	 * @param Object value Content de la var.
+	 * Add a var to the view object.
+	 * @param String var   Name of the var.
+	 * @param Object value Value of the var.
 	 * @return void
 	 */
 	public function addVar($var, $value) {

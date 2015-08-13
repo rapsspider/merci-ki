@@ -33,13 +33,6 @@ class Request {
      * @var array
      */
     public $arguments = array();
-    
-    /**
-     * HTTP request method
-     *
-     * @var string
-     */
-    public $_method = 'GET';
 	
     /**
      * Array of POST data. Will contain form data as well as uploaded files.
@@ -127,8 +120,7 @@ class Request {
 	
     /**
      * Sets the REQUEST_METHOD environment variable based on the simulated _method
-     * HTTP override value. The 'ORIGINAL_REQUEST_METHOD' is also preserved, if you
-     * want the read the non-simulated HTTP method the client used.
+     * HTTP override value.
      *
      * Set the POST data on the $data attribute and use the fonction stripslashes_deep
      * on this data if magic_quotes_gpc equals to 1.
@@ -136,7 +128,6 @@ class Request {
 	protected function _processPost() {
 		if ($_POST) {
 			$this->data = $_POST;
-            $this->_method = 'POST'; // Set the method by default.
 		}
 		
 		if (ini_get('magic_quotes_gpc') === '1') {
@@ -147,8 +138,6 @@ class Request {
         if(isset($this->data['_method'])) {
             if (!empty($_SERVER)) {
                 $_SERVER['REQUEST_METHOD'] = $this->data['_method'];
-            } else {
-                $_ENV['REQUEST_METHOD'] = $this->data['_method'];
             }
             unset($this->data['_method']);
         }
@@ -224,14 +213,13 @@ class Request {
 		} else {
 			$this->link = $_GET['_url'];
 		}
-        
-        if(isset($this->data['_method'])) {
-            $this->_method = $this->data['_method'];
-        }
 	}
     
+    /**
+     * Return the method of this request.
+     */
     public function getMethod() {
-        return $this->_method;
+        return $_SERVER['REQUEST_METHOD'];
     }
 }
 

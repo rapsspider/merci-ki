@@ -133,6 +133,7 @@ class Router {
         $url   = false;
         $matches = null;
         $method = $request->getMethod();
+        echo $method;
         
         foreach(self::$_routes[$method] as $url => $path) {
             //if(preg_match('%' . $route . '%', $request->link, $matches)) {
