@@ -65,14 +65,6 @@ class Request {
 	public $here = null;
 	
     /**
-     * Copy of php://input. Since this stream can only be read once in most SAPI's
-     * keep a copy of it so users don't need to know about that detail.
-     *
-     * @var string
-     */
-	protected $_inputs = '';
-	
-    /**
      * The built in detectors used with `is()` can be modified with `addDetector()`.
      *
      * There are several ways to specify a detector, see Cake\Network\Request::addDetector() for the
@@ -91,22 +83,6 @@ class Request {
 	
     /**
      * Create a new request object.
-     *
-     * You can supply the data as either an array or as a string.  If you use
-     * a string you can only supply the URL for the request.  Using an array will
-     * let you provide the following keys:
-     *
-     * - `post` POST data or non query string data
-     * - `query` Additional data from the query string.
-     * - `files` Uploaded file data formatted like $_FILES.
-     * - `cookies` Cookies for this request.
-     * - `environment` $_SERVER and $_ENV data.
-     * - `url` The URL without the base path for the request.
-     * - `base` The base URL for the request.
-     * - `webroot` The webroot directory for the request.
-     * - `input` The data that would come from php://input this is useful for simulating
-     * - `session` An instance of a Session object
-     *   requests with put, patch or delete data.
      *
      * @param string|array $config An array of request data to create a request with.
      */

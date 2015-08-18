@@ -23,7 +23,7 @@ use MerciKI\Database\IDatabaseSerializable;
 /**
  * Entity is a class which represents a data in database.
  */
-abstract class Entity implements JsonSerializable, IDatabaseSerializable {
+abstract class Model implements JsonSerializable, IDatabaseSerializable {
 
 	/**
      * An entity is new is it doesn't exist in database.

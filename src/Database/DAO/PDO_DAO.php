@@ -19,6 +19,7 @@ namespace MerciKI\Database\DAO;
 
 use \PDO;
 use \PDOStatement;
+use MerciKI\Config;
 use MerciKI\Models\Entity;
 use MerciKI\Database\IDAO;
 use MerciKI\Database\IDatabaseSerializable;
@@ -81,7 +82,7 @@ abstract class PDO_DAO implements IDAO {
 	 * Return a new instance of the entity
 	 */
 	public function newEntity() {
-		$entity = "MerciKI\\Models\\Entities\\" . $this->entity;
+		$entity = Config::$app['namespace'] . "Models\\Entities\\" . $this->entity;
 		return new $entity();
 	}
 	
@@ -105,15 +106,14 @@ abstract class PDO_DAO implements IDAO {
 						 .' VALUES (' . implode(',', $vals) . ');';
 		$req = $this->_db->prepare($this->lastRequest);
         
-        echo $this->lastRequest;
-        
 		$this->bindValues($req, $object);
         
 		if(!$req->execute()) {
-            /*
+            
                 echo "\nPDO::errorInfo():\n";
                 print_r($req->errorInfo());
-            */
+                echo $this->lastRequest ;
+            
         }
 		
 		$id = $this->_db->lastInsertId();
@@ -135,7 +135,7 @@ abstract class PDO_DAO implements IDAO {
 		$editAssign = [];
 		$primary	  = $object->primaryKey;
 		$dataChanged  = $object->getDataChanged();
-		$type		 = self::getType($object->getType($object->getType($primary)));
+		$type		 = self::getType($object->getType($primary));
 		
 		foreach($dataChanged as $var) $editAssign[] = $var . "=:" . $var . "__";
 		
@@ -158,7 +158,7 @@ abstract class PDO_DAO implements IDAO {
         if($this->_readOnly) throw new ReadOnlyException();
         
 		$primary = $object->primaryKey;
-		$type = self::getType($object->getType($object->getType($primary)));
+		$type = self::getType($object->getType($primary));
 		$this->lastRequest = 'DELETE FROM `' . $this->table . "`"
 						 . ' WHERE ' . $object->primaryKey . '=:id__;';
 		$req = $this->_db->prepare($this->lastRequest);

@@ -19,7 +19,7 @@ class Authentification {
 	 * l'utilisateur.
 	 * @var String
 	 */
-	protected static $session_index = 'utilisateur';
+	protected static $session_index = 'user';
 
 	/**
 	 * Contient la classe représentant le tableau d'utilisateurs
@@ -54,6 +54,8 @@ class Authentification {
 	 */
 	public function connexion($username, $passe) {
 		$user = $this->user->getUser($username, $passe);
+        
+        print_r($user);
 
 		if($user) {
 			$_SESSION[self::$session_index] = $user->toArray();

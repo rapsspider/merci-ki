@@ -92,7 +92,7 @@ abstract class Controller {
     	    $this->auth = new Authentification($class);
 
     	    if($this->auth->isConnected()) {
-                $this->addVar('user', $this->auth->getUtilisateur());
+                $this->addVar('user', $this->auth->getUser());
     	    }
         }
         
