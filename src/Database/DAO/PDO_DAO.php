@@ -258,9 +258,7 @@ abstract class PDO_DAO implements IDAO {
 	 * @return Entity
 	 */
 	public function get($id) {
-		$class = 'MerciKI\\Models\\Entities\\' . $this->entity;
-        
-        $object = new $class;
+		$object = $this->newEntity();
         
 		$primary = $object->primaryKey;
 		$type = is_int($id) ? self::getType('i') : self::getType('s');
@@ -274,6 +272,8 @@ abstract class PDO_DAO implements IDAO {
 
 		if(!$new) throw new EntityNotExist('Entity don\'t exist : ID(' . $id .') !');
 		
-		return $new ? new $class($new) : null;
+        $object->set($new);
+        
+		return $object;
 	}
 }

@@ -43,77 +43,77 @@ class Response {
      *
      * @var array
      */
-	protected $_statusCodes = array(
-		100 => 'Continue',
-		101 => 'Switching Protocols',
-		200 => 'OK',
-		201 => 'Created',
-		202 => 'Accepted',
-		203 => 'Non-Authoritative Information',
-		204 => 'No Content',
-		205 => 'Reset Content',
-		206 => 'Partial Content',
-		300 => 'Multiple Choices',
-		301 => 'Moved Permanently',
-		302 => 'Found',
-		303 => 'See Other',
-		304 => 'Not Modified',
-		305 => 'Use Proxy',
-		307 => 'Temporary Redirect',
-		400 => 'Bad Request',
-		401 => 'Unauthorized',
-		402 => 'Payment Required',
-		403 => 'Forbidden',
-		404 => 'Not Found',
-		405 => 'Method Not Allowed',
-		406 => 'Not Acceptable',
-		407 => 'Proxy Authentication Required',
-		408 => 'Request Time-out',
-		409 => 'Conflict',
-		410 => 'Gone',
-		411 => 'Length Required',
-		412 => 'Precondition Failed',
-		413 => 'Request Entity Too Large',
-		414 => 'Request-URI Too Large',
-		415 => 'Unsupported Media Type',
-		416 => 'Requested range not satisfiable',
-		417 => 'Expectation Failed',
-		500 => 'Internal Server Error',
-		501 => 'Not Implemented',
-		502 => 'Bad Gateway',
-		503 => 'Service Unavailable',
-		504 => 'Gateway Time-out',
-		505 => 'Unsupported Version'
-	);
+    protected $_statusCodes = array(
+        100 => 'Continue',
+        101 => 'Switching Protocols',
+        200 => 'OK',
+        201 => 'Created',
+        202 => 'Accepted',
+        203 => 'Non-Authoritative Information',
+        204 => 'No Content',
+        205 => 'Reset Content',
+        206 => 'Partial Content',
+        300 => 'Multiple Choices',
+        301 => 'Moved Permanently',
+        302 => 'Found',
+        303 => 'See Other',
+        304 => 'Not Modified',
+        305 => 'Use Proxy',
+        307 => 'Temporary Redirect',
+        400 => 'Bad Request',
+        401 => 'Unauthorized',
+        402 => 'Payment Required',
+        403 => 'Forbidden',
+        404 => 'Not Found',
+        405 => 'Method Not Allowed',
+        406 => 'Not Acceptable',
+        407 => 'Proxy Authentication Required',
+        408 => 'Request Time-out',
+        409 => 'Conflict',
+        410 => 'Gone',
+        411 => 'Length Required',
+        412 => 'Precondition Failed',
+        413 => 'Request Entity Too Large',
+        414 => 'Request-URI Too Large',
+        415 => 'Unsupported Media Type',
+        416 => 'Requested range not satisfiable',
+        417 => 'Expectation Failed',
+        500 => 'Internal Server Error',
+        501 => 'Not Implemented',
+        502 => 'Bad Gateway',
+        503 => 'Service Unavailable',
+        504 => 'Gateway Time-out',
+        505 => 'Unsupported Version'
+    );
 
     /**
      * Holds type key to mime type mappings for known mime types.
      *
      * @var array
      */
-	protected $_mimeTypes = array(
-		'html' => array('text/html', '*/*'),
-		'json' => 'application/json',
-		'xml' => array('application/xml', 'text/xml'),
-		'javascript' => 'application/javascript',
-		'form' => 'application/x-www-form-urlencoded',
-		'file' => 'multipart/form-data',
-		'xhtml' => array('application/xhtml+xml', 'application/xhtml', 'text/xhtml'),
-	);
+    protected $_mimeTypes = array(
+        'html' => array('text/html', '*/*'),
+        'json' => 'application/json',
+        'xml' => array('application/xml', 'text/xml'),
+        'javascript' => 'application/javascript',
+        'form' => 'application/x-www-form-urlencoded',
+        'file' => 'multipart/form-data',
+        'xhtml' => array('application/xhtml+xml', 'application/xhtml', 'text/xhtml'),
+    );
 
     /**
      * Protocol header to send to the client
      *
      * @var string
      */
-	protected $_protocole = 'HTTP/1.1';
+    protected $_protocole = 'HTTP/1.1';
 
     /**
      * Status code to send to the client
      *
      * @var int
      */
-	protected $_status = 200;
+    protected $_status = 200;
 
     /**
      * Content type to send. This can be an 'extension' that will be transformed using the $_mimetypes array
@@ -121,28 +121,28 @@ class Response {
      *
      * @var int
      */
-	protected $_contentType = 'text/html';
+    protected $_contentType = 'text/html';
 
     /**
      * Buffer list of headers
      *
      * @var array
      */
-	protected $_headers = array();
+    protected $_headers = array();
 
     /**
      * Buffer string for response message
      *
      * @var string
      */
-	protected $_body = null;
+    protected $_body = null;
 
     /**
      * The charset the response body is encoded with
      *
      * @var string
      */
-	protected $_charset = 'UTF-8';
+    protected $_charset = 'UTF-8';
 
     /**
      * Constructor
@@ -153,21 +153,21 @@ class Response {
      *  - status: the HTTP status code to respond with
      *  - charset: the charset for the response body
      */
-	public function __construct(array $options = array()) {
-		if (isset($options['body'])) {
-			$this->body($options['body']);
-		}
-		if (isset($options['statusCodes'])) {
-			$this->httpCodes($options['statusCodes']);
-		}
-		if (isset($options['status'])) {
-			$this->statusCode($options['status']);
-		}
-		if (!isset($options['charset'])) {
-			$options['charset'] = Config::$encoding;
-		}
-		$this->charset($options['charset']);
-	}
+    public function __construct(array $options = array()) {
+        if (isset($options['body'])) {
+            $this->body($options['body']);
+        }
+        if (isset($options['statusCodes'])) {
+            $this->httpCodes($options['statusCodes']);
+        }
+        if (isset($options['status'])) {
+            $this->statusCode($options['status']);
+        }
+        if (!isset($options['charset'])) {
+            $options['charset'] = Config::$encoding;
+        }
+        $this->charset($options['charset']);
+    }
 
     /**
      * Sends the complete response to the client including headers and message body.
@@ -175,37 +175,37 @@ class Response {
      *
      * @return void
      */
-	public function send() {
+    public function send() {
         // If a redirect must be done and the status code didn't change.
-		if (isset($this->_headers['Location']) && $this->_status === 200) {
-			$this->statusCode(302);
-		}
+        if (isset($this->_headers['Location']) && $this->_status === 200) {
+            $this->statusCode(302);
+        }
 
         // It takes the message associated to this status code.
-		$codeMessage = $this->_statusCodes[$this->_status];
+        $codeMessage = $this->_statusCodes[$this->_status];
 
         // It sends header and sets the content to null if the status code is 304 or 204.
-		$this->_sendHeader("{$this->_protocole} {$this->_status} {$codeMessage}");
-		$this->_setContent();
+        $this->_sendHeader("{$this->_protocole} {$this->_status} {$codeMessage}");
+        $this->_setContent();
 
-		// It sets the content type.
-		$this->_setContentType();
+        // It sets the content type.
+        $this->_setContentType();
 
-		// It sends all the header of this response.
-		foreach ($this->_headers as $header => $values) {
-			foreach ((array)$values as $value) {
-				$this->_sendHeader($header, $value);
-			}
-		}
+        // It sends all the header of this response.
+        foreach ($this->_headers as $header => $values) {
+            foreach ((array)$values as $value) {
+                $this->_sendHeader($header, $value);
+            }
+        }
 
         // It sends the body of the response.
-		$this->_sendContent($this->_body);
+        $this->_sendContent($this->_body);
         
 
         if (function_exists('fastcgi_finish_request')) {
             fastcgi_finish_request();
         }
-	}
+    }
 
     /**
      * Formats the Content-Type header based on the configured contentType and charset
@@ -213,38 +213,38 @@ class Response {
      *
      * @return void
      */
-	protected function _setContentType() {
-		if (in_array($this->_status, array(304, 204))) {
-			return;
-		}
-		$listeBlanche = array(
-			'application/javascript', 'application/json', 'application/xml', 'application/rss+xml'
-		);
+    protected function _setContentType() {
+        if (in_array($this->_status, array(304, 204))) {
+            return;
+        }
+        $listeBlanche = array(
+            'application/javascript', 'application/json', 'application/xml', 'application/rss+xml'
+        );
 
-		$charset = false;
-		if ($this->_charset &&
-			(strpos($this->_contentType, 'text/') === 0 || in_array($this->_contentType, $listeBlanche))
-		) {
-			$charset = true;
-		}
+        $charset = false;
+        if ($this->_charset &&
+            (strpos($this->_contentType, 'text/') === 0 || in_array($this->_contentType, $listeBlanche))
+        ) {
+            $charset = true;
+        }
 
-		if ($charset) {
-			$this->header('Content-Type', "{$this->_contentType}; charset={$this->_charset}");
-		} else {
-			$this->header('Content-Type', "{$this->_contentType}");
-		}
-	}
+        if ($charset) {
+            $this->header('Content-Type', "{$this->_contentType}; charset={$this->_charset}");
+        } else {
+            $this->header('Content-Type', "{$this->_contentType}");
+        }
+    }
 
     /**
      * Sets the response body to an empty text if the status code is 204 or 304
      *
      * @return void
      */
-	protected function _setContent() {
-		if (in_array($this->_status, array(304, 204))) {
-			$this->body('');
-		}
-	}
+    protected function _setContent() {
+        if (in_array($this->_status, array(304, 204))) {
+            $this->body('');
+        }
+    }
 
     /**
      * Sends a header to the client.
@@ -253,15 +253,15 @@ class Response {
      * @param string|null $value the header value
      * @return void
      */
-	protected function _sendHeader($nom, $value = null) {
-		if (!headers_sent()) {
-			if ($value === null) {
-				header($nom);
-			} else {
-				header("{$nom}: {$value}");
-			}
-		}
-	}
+    protected function _sendHeader($nom, $value = null) {
+        if (!headers_sent()) {
+            if ($value === null) {
+                header($nom);
+            } else {
+                header("{$nom}: {$value}");
+            }
+        }
+    }
 
     /**
      * Sends a content string to the client.
@@ -269,9 +269,9 @@ class Response {
      * @param string $content string to send as response body
      * @return void
      */
-	protected function _sendContent($content) {
-		echo $content;
-	}
+    protected function _sendContent($content) {
+        echo $content;
+    }
 
     /**
      * Buffers a header string to be sent
@@ -295,27 +295,27 @@ class Response {
      * will have the same effect as only doing `header('WWW-Authenticate: Not-Negotiate');`
      *
      * @param string|array $header An array of header strings or a single header string
-     *	- an associative array of "header nom" => "header value" is also accepted
-     *	- an array of string headers is also accepted
+     *    - an associative array of "header nom" => "header value" is also accepted
+     *    - an array of string headers is also accepted
      * @param string|array $value The header value(s)
      * @return array list of headers to be sent
      */
-	public function header($header = null, $value = null) {
-		if ($header === null) {
-			return $this->_headers;
-		}
-		$headers = is_array($header) ? $header : array($header => $value);
-		foreach ($headers as $header => $value) {
-			if (is_numeric($header)) {
-				list($header, $value) = array($value, null);
-			}
-			if ($value === null) {
-				list($header, $value) = explode(':', $header, 2);
-			}
-			$this->_headers[$header] = is_array($value) ? array_map('trim', $value) : trim($value);
-		}
-		return $this->_headers;
-	}
+    public function header($header = null, $value = null) {
+        if ($header === null) {
+            return $this->_headers;
+        }
+        $headers = is_array($header) ? $header : array($header => $value);
+        foreach ($headers as $header => $value) {
+            if (is_numeric($header)) {
+                list($header, $value) = array($value, null);
+            }
+            if ($value === null) {
+                list($header, $value) = explode(':', $header, 2);
+            }
+            $this->_headers[$header] = is_array($value) ? array_map('trim', $value) : trim($value);
+        }
+        return $this->_headers;
+    }
 
     /**
      * Accessor for the location header.
@@ -326,14 +326,14 @@ class Response {
      * @return string|null When setting the location null will be returned. When reading the location
      *    a string of the current location header value (if any) will be returned.
      */
-	public function location($url = null) {
-		if ($url === null) {
-			$headers = $this->header();
-			return isset($headers['Location']) ? $headers['Location'] : null;
-		}
-		$this->header('Location', $url);
-		return null;
-	}
+    public function location($url = null) {
+        if ($url === null) {
+            $headers = $this->header();
+            return isset($headers['Location']) ? $headers['Location'] : null;
+        }
+        $this->header('Location', $url);
+        return null;
+    }
 
     /**
      * Buffers the response message to be sent
@@ -342,12 +342,12 @@ class Response {
      * @param string|null $content the string message to be sent
      * @return string Current message buffer if $content param is passed as null
      */
-	public function body($content = null) {
-		if ($content === null) {
-			return $this->_body;
-		}
-		return $this->_body = $content;
-	}
+    public function body($content = null) {
+        if ($content === null) {
+            return $this->_body;
+        }
+        return $this->_body = $content;
+    }
 
     /**
      * Sets the HTTP status code to be sent
@@ -357,15 +357,15 @@ class Response {
      * @return int Current status code
      * @throws \InvalidArgumentException When an unknown status code is reached.
      */
-	public function statusCode($code = null) {
-		if ($code === null) {
-			return $this->_status;
-		}
-		if (!isset($this->_statusCodes[$code])) {
-			throw new MerciKIException('Unknown status code');
-		}
-		return $this->_status = $code;
-	}
+    public function statusCode($code = null) {
+        if ($code === null) {
+            return $this->_status;
+        }
+        if (!isset($this->_statusCodes[$code])) {
+            throw new MerciKIException('Unknown status code');
+        }
+        return $this->_status = $code;
+    }
 
     /**
      * Queries & sets valid HTTP response codes & messages.
@@ -398,24 +398,24 @@ class Response {
      *    strings as values, or null of the given $code does not exist.
      * @throws CakeException If an attempt is made to add an invalid status code
      */
-	public function httpCodes($code = null) {
-		if (empty($code)) {
-			return $this->_statusCodes;
-		}
-		if (is_array($code)) {
-			$codes = array_keys($code);
-			$min = min($codes);
-			if (!is_int($min) || $min < 100 || max($codes) > 999) {
-				throw new CakeException(__d('cake_dev', 'Invalid status code'));
-			}
-			$this->_statusCodes = $code + $this->_statusCodes;
-			return true;
-		}
-		if (!isset($this->_statusCodes[$code])) {
-			return null;
-		}
-		return array($code => $this->_statusCodes[$code]);
-	}
+    public function httpCodes($code = null) {
+        if (empty($code)) {
+            return $this->_statusCodes;
+        }
+        if (is_array($code)) {
+            $codes = array_keys($code);
+            $min = min($codes);
+            if (!is_int($min) || $min < 100 || max($codes) > 999) {
+                throw new CakeException(__d('cake_dev', 'Invalid status code'));
+            }
+            $this->_statusCodes = $code + $this->_statusCodes;
+            return true;
+        }
+        if (!isset($this->_statusCodes[$code])) {
+            return null;
+        }
+        return array($code => $this->_statusCodes[$code]);
+    }
 
     /**
      * Sets the response content type. It can be either a file extension
@@ -442,25 +442,25 @@ class Response {
      * @param string $contentType Content type key.
      * @return mixed current content type or false if supplied an invalid content type
      */
-	public function type($contentType = null) {
-		if ($contentType === null) {
-			return $this->_contentType;
-		}
-		if (is_array($contentType)) {
-			foreach ($contentType as $type => $definition) {
-				$this->_mimeTypes[$type] = $definition;
-			}
-			return $this->_contentType;
-		}
-		if (isset($this->_mimeTypes[$contentType])) {
-			$contentType = $this->_mimeTypes[$contentType];
-			$contentType = is_array($contentType) ? current($contentType) : $contentType;
-		}
-		if (strpos($contentType, '/') === false) {
-			return false;
-		}
-		return $this->_contentType = $contentType;
-	}
+    public function type($contentType = null) {
+        if ($contentType === null) {
+            return $this->_contentType;
+        }
+        if (is_array($contentType)) {
+            foreach ($contentType as $type => $definition) {
+                $this->_mimeTypes[$type] = $definition;
+            }
+            return $this->_contentType;
+        }
+        if (isset($this->_mimeTypes[$contentType])) {
+            $contentType = $this->_mimeTypes[$contentType];
+            $contentType = is_array($contentType) ? current($contentType) : $contentType;
+        }
+        if (strpos($contentType, '/') === false) {
+            return false;
+        }
+        return $this->_contentType = $contentType;
+    }
 
     /**
      * Returns the mime type definition for an alias
@@ -470,12 +470,12 @@ class Response {
      * @param string $alias the content type alias to map
      * @return mixed string mapped mime type or false if $alias is not mapped
      */
-	public function getMimeType($alias) {
-		if (isset($this->_mimeTypes[$alias])) {
-			return $this->_mimeTypes[$alias];
-		}
-		return false;
-	}
+    public function getMimeType($alias) {
+        if (isset($this->_mimeTypes[$alias])) {
+            return $this->_mimeTypes[$alias];
+        }
+        return false;
+    }
 
     /**
      * Maps a content-type back to an alias
@@ -485,18 +485,18 @@ class Response {
      * @param string|array $ctype Either a string content type to map, or an array of types.
      * @return mixed Aliases for the types provided.
      */
-	public function mapType($ctype) {
-		if (is_array($ctype)) {
-			return array_map(array($this, 'mapType'), $ctype);
-		}
+    public function mapType($ctype) {
+        if (is_array($ctype)) {
+            return array_map(array($this, 'mapType'), $ctype);
+        }
 
-		foreach ($this->_mimeTypes as $alias => $types) {
-			if (in_array($ctype, (array)$types)) {
-				return $alias;
-			}
-		}
-		return null;
-	}
+        foreach ($this->_mimeTypes as $alias => $types) {
+            if (in_array($ctype, (array)$types)) {
+                return $alias;
+            }
+        }
+        return null;
+    }
 
     /**
      * Sets the response charset
@@ -505,12 +505,12 @@ class Response {
      * @param string|null $charset Character set string.
      * @return string Current charset
      */
-	public function charset($charset = null) {
-		if ($charset === null) {
-			return $this->_charset;
-		}
-		return $this->_charset = $charset;
-	}
+    public function charset($charset = null) {
+        if ($charset === null) {
+            return $this->_charset;
+        }
+        return $this->_charset = $charset;
+    }
 
     /**
      * Convert this response as a String.
@@ -518,8 +518,8 @@ class Response {
      *
      * @return string
      */
-	public function __toString() {
-		return (string)$this->_body;
-	}
+    public function __toString() {
+        return (string)$this->_body;
+    }
 
 }

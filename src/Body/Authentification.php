@@ -54,8 +54,6 @@ class Authentification {
 	 */
 	public function connexion($username, $passe) {
 		$user = $this->user->getUser($username, $passe);
-        
-        print_r($user);
 
 		if($user) {
 			$_SESSION[self::$session_index] = $user->toArray();

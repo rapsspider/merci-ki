@@ -146,7 +146,7 @@ class Router {
             }
             
             $url_regex = preg_replace('%{([a-z_A-Z]+)}%', '(?P<$1>\d+)', $url, -1, $count);
-            if($count > 0 && preg_match('%' . $url_regex . '%', $request->link, $matches)) {
+            if($count > 0 && preg_match('%^' . $url_regex . '$%', $request->link, $matches)) {
                 
                 foreach($matches as $key => $value){
                     if(is_numeric($key)) unset($matches[$key]);
