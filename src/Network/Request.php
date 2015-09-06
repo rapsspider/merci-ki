@@ -86,7 +86,7 @@ class Request {
      *
      * @param string|array $config An array of request data to create a request with.
      */
-    public function __construct($link = null,  $parseEnvironment = true) {
+    public function __construct($link = null,  $parseEnvironment = true) {        
         if ($parseEnvironment) {
             $this->_processPost();
             $this->_processGet();
@@ -179,13 +179,24 @@ class Request {
      *                          à utiliser.
      */
     public function base($link = null) {
+        // Use of a default link. Usefull for simulating a request.
         if($link != null) {
             $_url = "_url=";
             $_GET['_url'] = substr($link, strpos($link, $_url) + strlen($_url));
+            
+        // Set the link.
+        } else {
+            $link = $_SERVER['REQUEST_URI'];
         }
-
-        if(!isset($_GET['_url'])) {
-            $this->link = '/';
+            
+        // The _url GET param is not use (Maybe don't use the htaccess file).
+        if(!array_key_exists('_url', $_GET)) {
+            $pos = strpos($link, Config::$root);
+            if($pos < 0) {
+               $this->link = '/';
+            } else {
+                $this->link = '/' . substr($link, $pos + strlen(Config::$root));
+            }
         } else {
             $this->link = $_GET['_url'];
         }

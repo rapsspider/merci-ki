@@ -39,6 +39,11 @@ class Config {
     public static $arg_separateur = '=';
     
     /**
+     * Root adresse for the website. ex : /mywebsite
+     */
+    public static $root = "/";
+    
+    /**
      * Configuration of the Authentification.
      */
     public static $auth_model = [

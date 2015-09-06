@@ -147,8 +147,14 @@ abstract class Controller {
 		}
 
         $this->beforeAction();
-		$view = call_user_func_array(array($this, $action), $args);
+
+        // No redirect is required.
+        if($this->response->statusCode() == 302) {
+            return;
+        }
         
+        $view = call_user_func_array(array($this, $action), $args);
+
         if(is_array($view) || $view instanceof \JsonSerializable) {
             $this->response->header('Content-Type: application/json');
             $view = json_encode($view);
