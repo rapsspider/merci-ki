@@ -28,7 +28,7 @@ class NotConnectedUser extends MerciKIException {
 	/**
 	 * HTTP status code to return.
 	 */
-	protected $code = 403;
+	protected $statusCode = 403;
 
 }
 

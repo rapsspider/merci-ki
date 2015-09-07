@@ -19,14 +19,20 @@ namespace MerciKI;
 
 use \Exception;
 use \PDOException;
+
 use MerciKI\Config;
 use MerciKI\Body\Router;
+use MerciKI\Body\View;
 use MerciKI\Body\ModelsManager;
-use MerciKI\Network\Response;
-use MerciKI\Network\Request;
 use MerciKI\Factory\PDOFactory;
+use MerciKI\Network\GlobalResponse;
 use MerciKI\Exception\MerciKIException;
 use MerciKI\Exception\DatabaseError;
+
+use Zend\Diactoros\Request;
+use Zend\Diactoros\Response;
+use Zend\Diactoros\Response\RedirectResponse;
+use Zend\Diactoros\Response\HtmlResponse;
 
 class Application {
 	
@@ -35,12 +41,6 @@ class Application {
 	 * @var Request
 	 */
 	private $request;
-	
-	/**
-	 * The response to send.
-	 * @var Response
-	 */
-	private $response;
 
 	/**
 	 * Default constructor of the application
@@ -53,25 +53,34 @@ class Application {
 	 * Initialize the application
 	 */
 	protected function initialize() {
-		$this->request = new Request();
-		$this->response = new Response();
+		$this->request = new Request($_SERVER['REQUEST_URI'], $_SERVER['REQUEST_METHOD'], 'php://input');
 	}
 	
 	/**
 	 * Launch the application
 	 */
 	public function execute() {
+        $responseToSend = null;
+
 		try {
-			$routeur = new Router($this->request, $this->response);
-			$routeur->execute();
-		} catch(PDOException $e) {
-			$f = new DatabaseError('Error during the connection : ' . $e->getMessage());
-			$this->_catchException($f);
+			$router = new Router();
+            $responseToSend = $router->execute($this->request);
 		} catch(MerciKIException $e) {
-			$this->_catchException($e);
+            $responseToSend = $this->_catchException($e);
 		}
 
-		echo $this->response->send();
+        if($responseToSend instanceof Response) {
+            header('HTTP/' . $responseToSend->getProtocolVersion() . ' '
+                . $responseToSend->getStatusCode() . ' '
+                . $responseToSend->getReasonPhrase());
+            foreach ($responseToSend->getHeaders() as $header => $values) {
+                header($header . ':' . implode(', ', $values));
+            }
+
+            if (!$responseToSend instanceof RedirectResponse) {
+                echo $responseToSend->getBody();
+            }
+        }
 	}
 
     /** 
@@ -85,10 +94,37 @@ class Application {
 	}
 
     /** 
-     * Change the response using a thrown exception.
+     * Return a response to send using an exception.
+     *
      * @param MerciKIException e The thrown exception.
+     * @return The response to send.
      */
 	protected function _catchException(MerciKIException $e) {
-		$e->getResponse($this->response);
+
+        $code = $e->getCode();
+
+        if($code == null) {
+            $code = 500;
+        }
+
+        try {
+            $view = new View();
+            $view->addVars([
+                'message' => $e->getMessage(),
+                'code'    => $code
+            ]);
+            $content = $view->content('Views' . DS . 'Exception' . DS .  $e->getViewFileName() . '.php', 'content');
+
+            if($e->getLayoutFileName()) {
+                $content = $view->content('Views' . DS . 'Layout' . DS .  $e->getLayoutFileName() . '.php');
+            }
+        } catch(ViewNotExist $v) {
+            $content = '<!DOCTYPE html><html><head><title>ERROR</title></head><body>'
+                 .'No view found for this exception : ' . $code . ' - ' . $e->getMessage() . '</body></html>';
+        } catch(MerciKIException $m) {
+            return $this->_catchException($m);
+        }
+
+		return new HtmlResponse($content, $code);
 	}
 }

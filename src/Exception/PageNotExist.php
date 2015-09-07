@@ -26,7 +26,7 @@ class PageNotExist extends MerciKIException {
 	/**
 	 * HTTP status code to return.
 	 */
-	protected $code = 404;
+	protected $statusCode = 404;
 
 }
 

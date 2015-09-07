@@ -17,18 +17,21 @@
 
 namespace MerciKI\Body;
 
+use \Exception;
+
 use MerciKI\Body\View;
 use MerciKI\Body\Controller;
 use MerciKI\Config;
-use MerciKI\Network\Request;
-use MerciKI\Network\Response;
 use MerciKI\Exception\PageNotExist;
 use MerciKI\Exception\MerciKIException;
 use MerciKI\Exception\ActionNotExist;
 use MerciKI\Exception\EntityNotExist;
 use MerciKI\Exception\ControllerNotExist;
 use MerciKI\Exception\ModelNotExist;
-use \Exception;
+use MerciKI\Network\GlobalResponse;
+
+use Zend\Diactoros\Request;
+use Zend\Diactoros\Response;
 
 /**
  * @TOBETRANSLATED
@@ -42,36 +45,31 @@ class Router {
         'GET' => [],
         'POST' => []
     ];
-    
-	/**
-	 * The HTTP Request.
-	 * @var Request
-	 */
-	private $request = null;
-
-	/**
-	 * The HTTP Response
-	 * @var Response
-	 */
-	private $response = null;
 
 	/**
 	 * Default constructor.
-	 * 
-	 * @param Request request HTTP Request.
-	 * @param Reposne response HTTP Response.
 	 */
-	public function __construct(Request &$request, Response &$response) {
-		$this->request = &$request;
-		$this->response = &$response;
+	public function __construct() {
 	}
 
-	/**
-	 * Instance le controller à utiliser.
-	 * Execute le controller.
-	 */
-	public function execute() {
-        $route = self::getRoute($this->request);
+    /**
+     * Instantiate the controller, execute it and return a response.
+     * @param $request Request the request.
+     * @return  $response Response to send.
+     * @throws ControllerNotExist The controller doesn't exist.
+     * @throws PageNotExist No route found for the request uri.
+     */
+	public function execute(Request $request) {
+        $method = $request->getMethod();
+        $argPos = strpos($request->getUri(), '?');
+
+        if($argPos !== false && $argPos >= 0) {
+            $uri    = substr($request->getUri(), 0, $argPos);
+        } else {
+            $uri    = $request->getUri();
+        }
+
+        $route = self::getRoute($method, $uri);
         
         if(!$route) throw new PageNotExist('No route found');
         
@@ -80,15 +78,15 @@ class Router {
 		$action	= $path[1];
         $args = $route['args'];
 
-		// On essaye d'instancier le controller.
+		// Try to instantiate the controller
 		$controller = Config::$app['namespace'] . 'Controllers\\' . $controller_name;
 		if(class_exists($controller)) {
-			$controller = new $controller($this->request, $this->response);
+			$controller = new $controller($request);
 		} else {
-			throw new ControllerNotExist('Controller "' . $controller . '" inexistant !');
+			throw new ControllerNotExist('Controller "' . $controller . '" doesn\'t exist !');
 		}
 
-		$controller->execute($action, $args);
+		return $controller->execute($action, $args);
 	}
     
     /**
@@ -125,29 +123,32 @@ class Router {
     /**
      * Return the route associated to the request
      *
-     * @param $request Request
+     * @param $method String the method of the Request.
+     * @param $uri    String the request uri.
      * @return Route
      */
-    public static function getRoute(&$request) {
-        $route = false;
-        $url   = false;
+    public static function getRoute($method = null, $uri) {
+        $route   = false;
+        $url     = false;
         $matches = null;
-        $method = $request->getMethod();
+
+        if($method == null) {
+            return $route;
+        }
         
         foreach(self::$_routes[$method] as $url => $path) {
             //if(preg_match('%' . $route . '%', $request->link, $matches)) {
-            if($url == $request->link) {
+            if($url == $uri) {
                 $route = [
                     'path' => $path,
                     'args' => []
                 ];
-                
                 break;
             }
             
             $url_regex = preg_replace('%{([a-z_A-Z]+)}%', '(?P<$1>\d+)', $url, -1, $count);
-            if($count > 0 && preg_match('%^' . $url_regex . '$%', $request->link, $matches)) {
-                
+            if($count > 0 && preg_match('%^' . $url_regex . '$%', $uri, $matches)) {
+
                 foreach($matches as $key => $value){
                     if(is_numeric($key)) unset($matches[$key]);
                 }

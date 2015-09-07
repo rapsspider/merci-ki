@@ -33,13 +33,6 @@ After download, just go on the repository with a command line and write : compos
 ## Licence MIT
 
 See the LICENSE file for more informations.
-
-The Reponse class was done using the cakephp Framework under the MIT License.
-
-    The MIT License
-
-    CakePHP(tm) : The Rapid Development PHP Framework (http://cakephp.org)
-    Copyright (c) 2005-2015, Cake Software Foundation, Inc.
     
 ## Thanks
 

@@ -26,7 +26,7 @@ class ViewNotExist extends MerciKIException {
 	/**
 	 * HTTP status code to return.
 	 */
-	protected $code = 500;
+	protected $statusCode = 500;
 
 }
 

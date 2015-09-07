@@ -18,9 +18,13 @@
 
 namespace MerciKI\Body;
 use MerciKI\Config;
-use MerciKI\Network\Request;
-use MerciKI\Network\Response;
 use MerciKI\Exception\ActionNotExist;
+
+use Zend\Diactoros\Request;
+use Zend\Diactoros\Response;
+use Zend\Diactoros\Response\RedirectResponse;
+use Zend\Diactoros\Response\HtmlResponse;
+use Zend\Diactoros\Response\JsonResponse;
 
 /**
  * This class represent a controller.
@@ -38,11 +42,16 @@ abstract class Controller {
 	 */
 	protected $request = null;
 
+    /**
+     * The GET PARAM
+     */
+    protected $params;
+
 	/**
-	 * The HTTP response
-	 * @var Response
+	 * The redirect link.
+	 * @var String
 	 */
-	protected $response = null;
+	protected $redirect = null;
 
 	/**
 	 * The action to execute
@@ -72,9 +81,8 @@ abstract class Controller {
 	 * @param Request  request  HTTP Request.
 	 * @param Response response HTTP Response.
      */
-    public function __construct(Request &$request, Response &$response) {
+    public function __construct(Request &$request) {
     	$this->request = &$request;
-    	$this->response = &$response;
     	$this->initialize();
     }
 
@@ -121,7 +129,8 @@ abstract class Controller {
 
     /**
      * Execute the controller.
-     * @param @action a executer
+     * @param $action String Action to execute.
+     * @return Response the response to send.
      */
     public function execute($action, $args = []) {
         $this->action = $action;
@@ -149,18 +158,22 @@ abstract class Controller {
         $this->beforeAction();
 
         // No redirect is required.
-        if($this->response->statusCode() == 302) {
-            return;
+        if($this->redirect != null) {
+            return new RedirectResponse($this->redirect);
         }
         
         $view = call_user_func_array(array($this, $action), $args);
 
-        if(is_array($view) || $view instanceof \JsonSerializable) {
-            $this->response->header('Content-Type: application/json');
-            $view = json_encode($view);
+        // No redirect is required.
+        if($this->redirect != null) {
+            return new RedirectResponse($this->redirect);
         }
-        
-        $this->response->body($view);
+
+        if(is_array($view) || $view instanceof \JsonSerializable) {
+            return new JsonResponse($view);
+        }
+
+        return new HtmlResponse($view);
     }
 
 	/**
@@ -189,7 +202,7 @@ abstract class Controller {
      */
     public function redirect($url) {
         if ($url !== null) {
-            $this->response->location(Router::url($url));
+            $this->redirect = Router::url($url);
         }
     }
 
@@ -203,16 +216,15 @@ abstract class Controller {
         $file = str_replace('.', DS, $file);
         
         // Si ce n'est pas une redirection
-        if ($this->response->statusCode() != 302) {
+        if ($this->redirect === null) {
             // Récupération du content de la view
-            $this->_view->file = 'Views' . DS . $file . '.php';
-            
-            if(!$this->layout) return $this->_view->content();
-            
+            $content = $this->_view->content('Views' . DS . $file . '.php', 'content');
+
             // Récupération du layout
-            $this->_view->addVar('content', $this->_view->content());
-            $this->_view->file = 'Views' . DS . 'Layout' . DS . $this->layout . '.php';
-            return $this->_view->content();
+            if($this->layout) {
+                $content = $this->_view->content('Views' . DS . 'Layout' . DS . $this->layout . '.php', 'content');
+            }
+            return $content;
         }
         return '';
     }

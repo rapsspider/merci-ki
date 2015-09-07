@@ -26,7 +26,7 @@ class DatabaseError extends MerciKIException {
 	/**
 	 * HTTP status code to return.
 	 */
-	protected $code = 401;
+	protected $statusCode = 401;
 
 }
 
