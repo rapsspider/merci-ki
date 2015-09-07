@@ -36,96 +36,96 @@ abstract class Controller {
      */
     protected $auth = null;
 
-	/**
-	 * The HTTP request
-	 * @var Request
-	 */
-	protected $request = null;
+    /**
+     * The HTTP request
+     * @var Request
+     */
+    protected $request = null;
 
     /**
      * The GET PARAM
      */
     protected $params;
 
-	/**
-	 * The redirect link.
-	 * @var String
-	 */
-	protected $redirect = null;
+    /**
+     * The redirect link.
+     * @var String
+     */
+    protected $redirect = null;
 
-	/**
-	 * The action to execute
-	 * @var String
-	 */
+    /**
+     * The action to execute
+     * @var String
+     */
     protected $action = null;
 
-	/**
-	 * The layout to use.
-	 * @var String
-	 */
-	public $layout = "default";
+    /**
+     * The layout to use.
+     * @var String
+     */
+    public $layout = "default";
 
     /**
      * @var View
      */
     public $_view;
 
-	/**
-	 * Table of models to use.
-	 * @var Array
-	 */
-	public $models = [];
+    /**
+     * Table of models to use.
+     * @var Array
+     */
+    public $models = [];
 
     /**
      * Default Constructor.
-	 * @param Request  request  HTTP Request.
-	 * @param Response response HTTP Response.
+     * @param Request  request  HTTP Request.
+     * @param Response response HTTP Response.
      */
     public function __construct(Request &$request) {
-    	$this->request = &$request;
-    	$this->initialize();
+        $this->request = &$request;
+        $this->initialize();
     }
 
     /**
      * Initialise les vars de la classe.
      */
     public function initialize() {
-    	$this->_view = new View();
+        $this->_view = new View();
 
         if(isset(Config::$auth_model['DAO']) and isset(Config::$auth_model['model'])) {
-        	$class = ModelsManager::getModel(
+            $class = ModelsManager::getModel(
                 Config::$auth_model['DAO'], 
                 Config::$auth_model['model']
             );
-    	    $this->auth = new Authentification($class);
+            $this->auth = new Authentification($class);
 
-    	    if($this->auth->isConnected()) {
+            if($this->auth->isConnected()) {
                 $this->addVar('user', $this->auth->getUser());
-    	    }
+            }
         }
         
         $this->_instanceModels();
     }
 
 
-	/**
-	 * Instance tous les tableaux de modèles inscrit dans le tableau content
-	 * dans le paramètre model du controller.
-	 */
-	protected function _instanceModels() {
-		foreach($this->models as $model => $DAO) {
-			$this->instanceModel($DAO, $model);
-		}
-	}
+    /**
+     * Instance tous les tableaux de modèles inscrit dans le tableau content
+     * dans le paramètre model du controller.
+     */
+    protected function _instanceModels() {
+        foreach($this->models as $model => $DAO) {
+            $this->instanceModel($DAO, $model);
+        }
+    }
 
     /**
      * Instance le modèle en fonction du $DAO spécifié.
      * @param String $DAO Dao à utiliser
      * @param String $model Modèle à instancier
      */
-	protected function instanceModel($DAO, $model) {
-		$this->$model = ModelsManager::getModel($DAO, $model);
-	}
+    protected function instanceModel($DAO, $model) {
+        $this->$model = ModelsManager::getModel($DAO, $model);
+    }
 
     /**
      * Execute the controller.
@@ -138,22 +138,22 @@ abstract class Controller {
         // On récupère le nom de la classe 
         $myClassName = get_real_class($this);
         if($i = strpos($myClassName, 'Controller')) {
-        	$myClassName = substr($myClassName, 0, $i);
+            $myClassName = substr($myClassName, 0, $i);
         }
 
-    	// Par défaut, le nom de la view est le même
-    	// que le nom de l'action et dans le répertoire
-    	// dont le nom correspond à celui du controller.
+        // Par défaut, le nom de la view est le même
+        // que le nom de l'action et dans le répertoire
+        // dont le nom correspond à celui du controller.
         $this->view = $myClassName . DS . $action;
 
-    	/**
-    	 * On ne peut executer que les fonctions écrites dans les sous classes
-    	 * du controller. Par exemple beforeAction n'est pas une action
-    	 */
-		if(!method_exists($this, $action) 
-			&& !in_array($action, get_class_methods('MerciKI\Body\Controller'))) {
-			throw new ActionNotExist('Action "' . $action . '" inexistante !');
-		}
+        /**
+         * On ne peut executer que les fonctions écrites dans les sous classes
+         * du controller. Par exemple beforeAction n'est pas une action
+         */
+        if(!method_exists($this, $action) 
+            && !in_array($action, get_class_methods('MerciKI\Body\Controller'))) {
+            throw new ActionNotExist('Action "' . $action . '" inexistante !');
+        }
 
         $this->beforeAction();
 
@@ -176,23 +176,23 @@ abstract class Controller {
         return new HtmlResponse($view);
     }
 
-	/**
-	 * Method to call before executing the action.
-	 * @return void
-	 */
-	public function beforeAction() {
+    /**
+     * Method to call before executing the action.
+     * @return void
+     */
+    public function beforeAction() {
 
-	}
+    }
 
-	/**
-	 * Add a var to the view object.
-	 * @param String var   Name of the var.
-	 * @param Object value Value of the var.
-	 * @return void
-	 */
-	public function addVar($var, $value) {
-		$this->_view->addVar($var,$value);
-	}
+    /**
+     * Add a var to the view object.
+     * @param String var   Name of the var.
+     * @param Object value Value of the var.
+     * @return void
+     */
+    public function addVar($var, $value) {
+        $this->_view->addVar($var,$value);
+    }
     
     /**
      * Méthode permettant de faire une redirection vers une autre addresse url

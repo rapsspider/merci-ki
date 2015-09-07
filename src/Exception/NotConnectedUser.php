@@ -25,10 +25,10 @@ use MerciKI\Network\Response;
  */
 class NotConnectedUser extends MerciKIException {
 
-	/**
-	 * HTTP status code to return.
-	 */
-	protected $statusCode = 403;
+    /**
+     * HTTP status code to return.
+     */
+    protected $statusCode = 403;
 
 }
 

@@ -35,39 +35,39 @@ use Zend\Diactoros\Response\RedirectResponse;
 use Zend\Diactoros\Response\HtmlResponse;
 
 class Application {
-	
-	/**
-	 * The request received
-	 * @var Request
-	 */
-	private $request;
+    
+    /**
+     * The request received
+     * @var Request
+     */
+    private $request;
 
-	/**
-	 * Default constructor of the application
-	 */
-	public function __construct() {
-		$this->initialize();
-	}
-	
-	/**
-	 * Initialize the application
-	 */
-	protected function initialize() {
-		$this->request = new Request($_SERVER['REQUEST_URI'], $_SERVER['REQUEST_METHOD'], 'php://input');
-	}
-	
-	/**
-	 * Launch the application
-	 */
-	public function execute() {
+    /**
+     * Default constructor of the application
+     */
+    public function __construct() {
+        $this->initialize();
+    }
+    
+    /**
+     * Initialize the application
+     */
+    protected function initialize() {
+        $this->request = new Request($_SERVER['REQUEST_URI'], $_SERVER['REQUEST_METHOD'], 'php://input');
+    }
+    
+    /**
+     * Launch the application
+     */
+    public function execute() {
         $responseToSend = null;
 
-		try {
-			$router = new Router();
+        try {
+            $router = new Router();
             $responseToSend = $router->execute($this->request);
-		} catch(MerciKIException $e) {
+        } catch(MerciKIException $e) {
             $responseToSend = $this->_catchException($e);
-		}
+        }
 
         if($responseToSend instanceof Response) {
             header('HTTP/' . $responseToSend->getProtocolVersion() . ' '
@@ -81,17 +81,17 @@ class Application {
                 echo $responseToSend->getBody();
             }
         }
-	}
+    }
 
     /** 
      * Return an object PDO
      * @return PDO
      */
-	protected function _getDatabase() {
-		$pdo = PDOFactory::getMysqlConnection('default');
-		if(!$pdo) throw new DatabaseError('Can\'t create the PDO object.');
-		return $pdo;
-	}
+    protected function _getDatabase() {
+        $pdo = PDOFactory::getMysqlConnection('default');
+        if(!$pdo) throw new DatabaseError('Can\'t create the PDO object.');
+        return $pdo;
+    }
 
     /** 
      * Return a response to send using an exception.
@@ -99,7 +99,7 @@ class Application {
      * @param MerciKIException e The thrown exception.
      * @return The response to send.
      */
-	protected function _catchException(MerciKIException $e) {
+    protected function _catchException(MerciKIException $e) {
 
         $code = $e->getCode();
 
@@ -125,6 +125,6 @@ class Application {
             return $this->_catchException($m);
         }
 
-		return new HtmlResponse($content, $code);
-	}
+        return new HtmlResponse($content, $code);
+    }
 }

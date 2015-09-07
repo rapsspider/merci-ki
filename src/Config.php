@@ -21,11 +21,11 @@ class Config {
     /**
      * Active ou non le debug de l'application
      */
-	public static $debug = false;
+    public static $debug = false;
 
-	/**
-	 * Information de connexion à la base de données.
-	 */
+    /**
+     * Information de connexion à la base de données.
+     */
     public static $databases = [];
 
     /**

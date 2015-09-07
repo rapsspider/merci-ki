@@ -46,11 +46,11 @@ class Router {
         'POST' => []
     ];
 
-	/**
-	 * Default constructor.
-	 */
-	public function __construct() {
-	}
+    /**
+     * Default constructor.
+     */
+    public function __construct() {
+    }
 
     /**
      * Instantiate the controller, execute it and return a response.
@@ -59,7 +59,7 @@ class Router {
      * @throws ControllerNotExist The controller doesn't exist.
      * @throws PageNotExist No route found for the request uri.
      */
-	public function execute(Request $request) {
+    public function execute(Request $request) {
         $method = $request->getMethod();
         $argPos = strpos($request->getUri(), '?');
 
@@ -74,20 +74,20 @@ class Router {
         if(!$route) throw new PageNotExist('No route found');
         
         $path = explode('@', $route['path']);
-		$controller_name = $path[0];
-		$action	= $path[1];
+        $controller_name = $path[0];
+        $action    = $path[1];
         $args = $route['args'];
 
-		// Try to instantiate the controller
-		$controller = Config::$app['namespace'] . 'Controllers\\' . $controller_name;
-		if(class_exists($controller)) {
-			$controller = new $controller($request);
-		} else {
-			throw new ControllerNotExist('Controller "' . $controller . '" doesn\'t exist !');
-		}
+        // Try to instantiate the controller
+        $controller = Config::$app['namespace'] . 'Controllers\\' . $controller_name;
+        if(class_exists($controller)) {
+            $controller = new $controller($request);
+        } else {
+            throw new ControllerNotExist('Controller "' . $controller . '" doesn\'t exist !');
+        }
 
-		return $controller->execute($action, $args);
-	}
+        return $controller->execute($action, $args);
+    }
     
     /**
      * Fonction permettant de formatter une url. 

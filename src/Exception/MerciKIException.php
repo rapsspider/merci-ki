@@ -26,20 +26,20 @@ use MerciKI\Network\Response;
  */
 class MerciKIException extends Exception {
 
-	/**
-	 * HTTP status code to return.
-	 */
-	protected $statusCode = 501;
+    /**
+     * HTTP status code to return.
+     */
+    protected $statusCode = 501;
 
-	/**
-	 * The layout file name of this exception.
-	 */
-	protected $layout = "exception";
+    /**
+     * The layout file name of this exception.
+     */
+    protected $layout = "exception";
 
-	/**
+    /**
      * The view file name of this exception.
-	 */
-	protected $view = 'index';
+     */
+    protected $view = 'index';
 
     /**
      * Getter on status code

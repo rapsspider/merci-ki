@@ -23,10 +23,10 @@ use MerciKI\Network\Response;
 
 class DatabaseError extends MerciKIException {
 
-	/**
-	 * HTTP status code to return.
-	 */
-	protected $statusCode = 401;
+    /**
+     * HTTP status code to return.
+     */
+    protected $statusCode = 401;
 
 }
 

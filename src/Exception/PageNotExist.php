@@ -23,10 +23,10 @@ use MerciKI\Network\Response;
 
 class PageNotExist extends MerciKIException {
 
-	/**
-	 * HTTP status code to return.
-	 */
-	protected $statusCode = 404;
+    /**
+     * HTTP status code to return.
+     */
+    protected $statusCode = 404;
 
 }
 

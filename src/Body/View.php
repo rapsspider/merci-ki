@@ -29,46 +29,46 @@ class View {
      * Vars to set on the view
      * @var Array
      */
-	private $vars = [];
+    private $vars = [];
 
-	/**
-	 * Get the content of the this view.
+    /**
+     * Get the content of the this view.
      * @param file String The path to the file to use.
      * @param  varName String the name of the variable where must be add (or append) the result.
      * @return String The result.
      * @throw ViewNotExist if the file doesn't exist.
-	 */
-	public function content($file = null, $varName = null) {
+     */
+    public function content($file = null, $varName = null) {
         if ($file == null) {
             return "";
         }
 
         $viewFile = __ROOT_DIR__ . DS . Config::$app['directory'] . DS . $file;
 
-		if(!file_exists($viewFile)) {
-			throw new ViewNotExist('View  "' . $viewFile . '" don\'t exist !');
-		}
+        if(!file_exists($viewFile)) {
+            throw new ViewNotExist('View  "' . $viewFile . '" don\'t exist !');
+        }
 
-		extract($this->vars);
-		ob_start();
-		include $viewFile;
+        extract($this->vars);
+        ob_start();
+        include $viewFile;
 
         if($varName == null) {
             return ob_get_clean();
         } // else
 
         return $this->vars[$varName] = ob_get_clean();
-	}
+    }
 
-	/**
-	 * Set a new variable to the view.
-	 * @param var String Name of the var.
-	 * @param value Object Content of the var.
-	 * @return void
-	 */
-	public function addVar($var, $value) {
-		$this->vars[$var] = $value;
-	}
+    /**
+     * Set a new variable to the view.
+     * @param var String Name of the var.
+     * @param value Object Content of the var.
+     * @return void
+     */
+    public function addVar($var, $value) {
+        $this->vars[$var] = $value;
+    }
 
     /**
      * Add a map to this current variable map.

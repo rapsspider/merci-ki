@@ -18,16 +18,16 @@
 namespace MerciKI\Database;
 
 interface IDatabaseSerializable {
-	
-	/**
-	 * Return list of modified attributes
-	 */
-	public function getDataChanged();
+    
+    /**
+     * Return list of modified attributes
+     */
+    public function getDataChanged();
 
-	/**
-	 * Return true if it's a new entity
-	 */
-	public function isNew();
+    /**
+     * Return true if it's a new entity
+     */
+    public function isNew();
 }
 
 ?>

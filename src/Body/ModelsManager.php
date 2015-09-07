@@ -25,24 +25,24 @@ use MerciKI\Database\IDatabaseSerializable;
 
 class ModelsManager {
 
-	protected static $_instances = [];
+    protected static $_instances = [];
 
-	public static function getModel($DAO, $model) {
-		if(!isset(self::$_instances[$model])) {
-			$class = Config::$app['namespace'] . 'Models\\DAO\\' . $model . 'Table' . $DAO;
-			if(class_exists($class)) {
-				self::$_instances[$model] = self::instanceModel($DAO, $class);
-			} else {
-				throw new MerciKIException('Table Model "' . $model . 'Table' . $DAO . '" (' . $class . ') inexistant !');
-			}
-		}
+    public static function getModel($DAO, $model) {
+        if(!isset(self::$_instances[$model])) {
+            $class = Config::$app['namespace'] . 'Models\\DAO\\' . $model . 'Table' . $DAO;
+            if(class_exists($class)) {
+                self::$_instances[$model] = self::instanceModel($DAO, $class);
+            } else {
+                throw new MerciKIException('Table Model "' . $model . 'Table' . $DAO . '" (' . $class . ') inexistant !');
+            }
+        }
 
-		return self::$_instances[$model];
-	}
+        return self::$_instances[$model];
+    }
     
     protected static function instanceModel($DAO, $class) {
         $dao = self::getDAO($DAO, $class::$database);
-	    return new $class($dao);
+        return new $class($dao);
     }
     
     protected static function getDAO($DAO, $arg) {

@@ -20,16 +20,16 @@ namespace MerciKI\Database;
 use MerciKI\Models\Entity;
 
 interface IDAO {
-	public function newEntity();
-	
-	public function create(IDatabaseSerializable &$aEntity);
-	
-	public function edit(IDatabaseSerializable &$aEntity);
-	
-	/**
-	 * @param String|Integer $id Identity of the object
-	 */
-	public function get($id);
-	
-	public function delete(IDatabaseSerializable &$aEntity);
+    public function newEntity();
+    
+    public function create(IDatabaseSerializable &$aEntity);
+    
+    public function edit(IDatabaseSerializable &$aEntity);
+    
+    /**
+     * @param String|Integer $id Identity of the object
+     */
+    public function get($id);
+    
+    public function delete(IDatabaseSerializable &$aEntity);
 }

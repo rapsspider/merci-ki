@@ -23,10 +23,10 @@ use MerciKI\Network\Response;
 
 class EntityNotExist extends MerciKIException {
 
-	/**
-	 * HTTP status code to return.
-	 */
-	protected $statusCode = 500;
+    /**
+     * HTTP status code to return.
+     */
+    protected $statusCode = 500;
 
 }
 

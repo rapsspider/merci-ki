@@ -24,13 +24,13 @@ namespace MerciKI\Interfaces;
  */
 interface IUserTable {
 
-	/**
-	 * Tente de connecté un utilisateur
-	 *
-	 * @param String login Le login de l'utilisateur
-	 * @param String password Le password de l'utilisateur
-	 * @return Modele L'utilisateur
-	 */
-	public function getUser($login, $password);
+    /**
+     * Tente de connecté un utilisateur
+     *
+     * @param String login Le login de l'utilisateur
+     * @param String password Le password de l'utilisateur
+     * @return Modele L'utilisateur
+     */
+    public function getUser($login, $password);
 }
 
